@@ -1,5 +1,5 @@
 <template>
-  <div class="col-sm-6 col-md-4">
+  <div class="col-sm-12 col-md-6">
     <div class="panel panel-success">
       <div class="panel-heading">
         <h3 class="panel-title">
@@ -15,21 +15,28 @@
             class="form-control"
             placeholder="Quantity"
             v-model.number="quantity"
+            :class="{ danger: insufficientFunds }"
           />
         </div>
         <div class="pull-right">
           <button
             class="btn btn-success"
             @click="buyStock"
-            :disabled="isDisabled"
+            :disabled="isDisabled || insufficientFunds"
           >
-            Buy
+            {{ insufficientFunds ? "Insufficient Funds" : "Buy" }}
           </button>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.danger {
+  border: 1px solid red;
+}
+</style>
 
 <script>
 export default {
@@ -54,6 +61,12 @@ export default {
   computed: {
     isDisabled() {
       return this.quantity <= 0 || !Number.isInteger(this.quantity);
+    },
+    funds() {
+      return this.$store.getters.funds;
+    },
+    insufficientFunds() {
+      return this.quantity * this.stock.price > this.funds;
     },
   },
 };
