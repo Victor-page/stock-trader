@@ -2,11 +2,24 @@
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
-        <router-link to="/" class="navbar-brand">Stock Trader</router-link>
+        <button
+          type="button"
+          class="navbar-toggle"
+          data-toggle="collapse"
+          data-target="#bs-example-navbar-collapse-1"
+          @click="showMobileMenu = !showMobileMenu"
+          :class="[showMobileMenu ? '' : 'collapsed']"
+        >
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <router-link to="/" class="navbar-brand"> Stock Trader </router-link>
       </div>
 
-      <div class="collapse navbar-collapse">
-        <ul class="nav navbar-nav">
+      <div class="collapse navbar-collapse" :class="{ in: showMobileMenu }">
+        <ul class="nav navbar-nav" @click="showMobileMenu = !showMobileMenu">
           <router-link to="/portfolio" activeClass="active" tag="li">
             <a>Portfolio</a>
           </router-link>
@@ -61,6 +74,7 @@ export default {
   data() {
     return {
       isDropdownOpen: false,
+      showMobileMenu: false,
     };
   },
   computed: {
